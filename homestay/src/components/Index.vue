@@ -1,10 +1,19 @@
 <template>
-	<h1>这是路由内容区域</h1>
+	<div>
+		<Carousel />
+		<Content />
+	</div>
 </template>
 
 <script>
+import Carousel from './index/Carousel';
+import Content from './index/Content';
 	export default {
-		name: 'App',
+		name: 'Index',
+		components:{
+			Carousel,
+			Content
+		},
 		data() {
 			return {
 
