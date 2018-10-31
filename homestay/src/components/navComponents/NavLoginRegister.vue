@@ -6,7 +6,7 @@
 			<router-link to="/register">注册</router-link>
 		</div>
 		<div v-if="$store.state.user.state" class="logout">
-			<NavHeader href="/info" :src="$store.state.user.imgSrc" :username="$store.state.user.username"/>
+			<NavHeader href="/info" :src="$store.state.user.imgSrc" :nickname="$store.state.user.nickname"/>
 			<ul>
 				<li @click="logout">退出</li>
 			</ul>
@@ -28,7 +28,7 @@
 			NavHeader,
 		},
 		methods:{
-			logout(e){
+			logout(e){//退出登录
 				this.axios.get('http://localhost/user/logout').then(res=>{
 					console.log(res.data)
 					this.$store.commit('logout')

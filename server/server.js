@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
 
 //静态托管
 app.use(express.static('static'));
-app.use('/uploads',express.static('uploads'));
+app.use('/upload',express.static('upload'));
 
 //端口
 app.listen('80', function () {

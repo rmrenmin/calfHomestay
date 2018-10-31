@@ -1,17 +1,147 @@
 <template>
-	<h1>注册</h1>
+	<div class="register-box" type="flex">
+		<el-row justify="center" class="register-row">
+			<el-col :span="18" :offset="3">
+				<el-input id="username" v-model="username" placeholder="请输入帐号">
+					<template slot="prepend">帐号</template>
+				</el-input>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="register-row">
+			<el-col :span="18" :offset="3">
+				<el-input id="tel" v-model="tel" placeholder="手机号">
+					<template slot="prepend">手机号</template>
+				</el-input>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="register-row">
+			<el-col :span="18" :offset="3">
+				<div class="block">
+					<div class="el-input el-input-group el-input-group--prepend">
+						<div class="el-input-group__prepend">出生日期</div>
+						<el-date-picker v-model="birthday" align="center" type="date" placeholder="选择日期">
+						</el-date-picker>
+					</div>
+				</div>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="register-row">
+			<el-col :span="18" :offset="3">
+				<div class="el-input el-input-group el-input-group--prepend">
+					<div class="el-input-group__prepend sex">性别</div>
+					<div class="el-input__inner">
+						<el-radio v-model="sex" label="男">男</el-radio>
+	  					<el-radio v-model="sex" label="女">女</el-radio>
+					</div>	
+				</div>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="register-row">
+			<el-col :span="18" :offset="3">
+				<el-input id="password" v-model="password" type="password" placeholder="请输入密码">
+					<template slot="prepend">密码</template>
+				</el-input>
+			</el-col>
+		</el-row>
+		<el-row justify="center" :gutter="10" class="register-row">
+			<el-col :span="18" :offset="3">
+				<el-input id="repassword" v-model="rePassword" type="password" placeholder="请再次输入密码">
+					<template slot="prepend">验证密码</template>
+				</el-input>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="register-row">
+			<el-col :span="12" :offset="3">
+				<el-input id="captcha" v-model="captcha" placeholder="请输入验证码">
+					<template slot="prepend">验证码</template>
+				</el-input>
+			</el-col>
+			<el-col :span="6">
+				<img :src="src" @click="changeClick" />
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="register-row">
+			<el-col :span="18" :offset="3">
+				<el-button id="register-btn" v-on:click="register" style="width:100%" type="primary">注册</el-button>
+			</el-col>
+		</el-row>
+	</div>
 </template>
 
 <script>
-	export default{
-		name:'Register',
-		data(){
-			return{
-				
+	export default {
+		name: 'Register',
+		data() {
+			return {
+				captcha: '',
+				username: '',
+				password: '',
+				rePassword: '',
+				tel: '',
+				src: 'http://localhost/captcha',
+				//日期相关
+				birthday: '',
+				sex:'男'
 			}
-		}
+		},
+		methods: {
+			register(e) {
+				if(this.rePassword !== this.password) {
+					return
+				}
+				let data = this.qs.stringify({
+					username: this.username,
+					password: this.password,
+					birthday: this.birthday,
+					sex: this.sex,
+					tel: this.tel,
+					captcha: this.captcha,
+				});
+				this.axios.post('http://localhost/user/register', data).then(res => {
+					console.log(res.data)
+					if(res.data.status === 'error') {
+						this.src = 'http://localhost/captcha?t=' + new Date();
+					} else { //注册成功，跳转到登录页面
+						this.$router.push('/login')
+					}
+				}).catch(err => {
+					this.src = 'http://localhost/captcha?t=' + new Date();
+					console.log(err)
+				})
+			},
+			changeClick(e) {
+				this.src = 'http://localhost/captcha?t=' + new Date();
+			}
+		},
+		
 	}
 </script>
 
-<style>
+<style scoped>
+	.register-box {
+		position: relative;
+		left: calc(50% - 200px);
+		/*top: calc(50% - 400px);*/
+		padding: 50px 0px;
+		width: 400px;
+		border: 1px solid black;
+		border-radius: 10px;
+		/*box-shadow: 5px 5px 4px #e3e3e3;*/
+		box-shadow: 4px 4px 4px 2px rgba(136, 136, 136, 0.5), 8px 8px 8px 4px rgba(136, 136, 136, 0.3);
+	}
+	
+	.register-row {
+		height: 50px;
+	}
+	
+	.register-box img {
+		width: 80px;
+		height: 36px;
+	}
+	.el-date-editor {
+		width: 100% !important;
+	}
+	.sex {
+		height: 40px;
+	}
 </style>

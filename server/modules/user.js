@@ -5,9 +5,9 @@ const router = express.Router();
 
 //注册路由
 router.post('/register', (req, res) => {
-    // console.log(req.body.captcha)
+       console.log(req.body)
     //验证码验证
-    if(!tools.captcha(req,res)) return;
+//  if(!tools.captcha(req,res)) return;       //部署时去掉注释
     let body = req.body;
     async.waterfall([
         function (cb) { //检测账户名是否存在
@@ -26,8 +26,9 @@ router.post('/register', (req, res) => {
                 return;
             }
             // let headersrc = req.session.headersrc[0] || '/upload/default.jpg';
-            let sql = 'insert into user (username,password,tel)values(?,?,?)';   //根据项目修改
-            conn.query(sql, [body.username, body.password,body.tel], (err, results) => {
+            let sql = 'insert into user (username,password,tel,birthday,sex,nickname)values(?,?,?,?,?,?)';   //根据项目修改
+            let nickname = tools.randomString();
+            conn.query(sql, [body.username, body.password, body.tel, new Date(body.birthday),body.sex,nickname], (err, results) => {
                 if (err) {
                     tools.dbError(err,res);
                     return;
@@ -49,8 +50,9 @@ router.post('/register', (req, res) => {
 
 //登录路由
 router.post('/login', (req, res) => {
+//  console.dir(req.body);
     //验证码验证
-    if(!tools.captcha(req,res)) return;
+//  if(!tools.captcha(req,res)) return;         //部署时去掉注释
     let body = req.body;
     async.series({
         login: function (cb) {
@@ -68,9 +70,19 @@ router.post('/login', (req, res) => {
                     req.session.username = results[0].username;  //根据项目修改
                     req.session.imgsrc = results[0].imgsrc;  //根据项目修改
                     req.session.tel = results[0].tel;  //根据项目修改
+                    req.session.sex = results[0].sex;  //根据项目修改
+                    req.session.birthday = results[0].birthday;  //根据项目修改
                     res.json({
                         status: 'ok',
-                        message: '登录成功'
+                        message: {
+                        	imgsrc:results[0].imgsrc,
+                        	username:results[0].username,
+                        	tel:results[0].tel,
+                        	sex:results[0].sex,
+                        	nickname:results[0].nickname,
+                        	birthday:results[0].birthday,
+                        },
+                        
                     });
                     cb(null, {
                         status: 'success'
@@ -104,5 +116,13 @@ router.post('/login', (req, res) => {
 
 })
 
+//退出路由
+router.get('/logout',(req,res)=>{
+	req.session=null;
+	res.json({
+		status:'success',
+		message:'退出成功！'
+	})
+})
 
 module.exports = router;

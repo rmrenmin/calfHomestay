@@ -1,8 +1,8 @@
 <template>
 	<router-link :to="href">
 		<img :src="src" />
-		<span>
-			{{username}}
+		<span :title="nickname">
+			{{nickname}}
 		</span>
 	</router-link>
 </template>
@@ -10,10 +10,15 @@
 <script>
 	export default{
 		name:'NavHeader',
-		props:['href','username','src'],
+		props:['href','nickname','src'],
 		data(){
 			return{
 				
+			}
+		},
+		watch:{
+			src(){
+				console.log('watch',this.src)
 			}
 		}
 	}
@@ -42,5 +47,12 @@
 		vertical-align: middle;
 		margin-right: 1px;
 		border-radius: 50%;
+	}
+	span{
+		display: inline-block;
+		width: 2rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		vertical-align: middle;
 	}
 </style>
