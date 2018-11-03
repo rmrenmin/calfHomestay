@@ -16,11 +16,6 @@
 				
 			}
 		},
-		watch:{
-			src(){
-				console.log('watch',this.src)
-			}
-		}
 	}
 	
 </script>

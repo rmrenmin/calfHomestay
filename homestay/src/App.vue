@@ -47,11 +47,13 @@
 	
 	
 	.el-main {
-		background-color: #E9EEF3;
+		/*background-color: #E9EEF3;*/
 		color: #333;
-		text-align: center;
+		/*text-align: center;*/
 		/*line-height: 160px;*/
 		min-height: 650px;
+		overflow-x: hidden;
+		overflow-y: hidden;
 	}
 	
 	body>.el-container {

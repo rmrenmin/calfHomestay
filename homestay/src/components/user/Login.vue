@@ -40,7 +40,7 @@
 				captcha: '',
 				username: '',
 				password: '',
-				src: 'http://localhost/captcha',
+				src: 'http://localhost:81/captcha',
 			}
 		},
 		methods: {
@@ -50,28 +50,38 @@
 					password: this.password,
 					captcha: this.captcha
 				});
-				this.axios.post('http://localhost/user/login', data).then(res => {
+				this.axios.post('http://localhost:81/user/login', data).then(res => {
 					//					console.log(res.data)
 					if(res.data.status === 'error') {
-						this.src = 'http://localhost/captcha?t=' + new Date();
+						this.src = 'http://localhost:81/captcha?t=' + new Date();
 					} else { //登录成功修改状态
-						this.$store.commit('login', {
+						let user = {
 							imgSrc: res.data.message.imgsrc,
 							username: res.data.message.username,
 							tel: res.data.message.tel,
 							sex: res.data.message.sex,
 							nickname: res.data.message.nickname,
 							birthday: res.data.message.birthday,
-						});
+							state:true,
+						};
+						this.$store.commit('login', user);
+						this.$store.commit('loginState');
+						//将登陆状态保存到localStorage
+						for(let item in user){
+							localStorage.setItem(item,user[item])
+						}
+						//将connect.sid保存到localStorage
+//						console.log(document.cookieParser)
+//						localStorage.setItem('connect.sid',this.getCookie('connect.sid'))
 						this.$router.push('/')
 					}
 				}).catch(err => {
-					this.src = 'http://localhost/captcha?t=' + new Date();
+					this.src = 'http://localhost:81/captcha?t=' + new Date();
 					console.log(err)
 				})
 			},
 			changeClick(e) {
-				this.src = 'http://localhost/captcha?t=' + new Date();
+				this.src = 'http://localhost:81/captcha?t=' + new Date();
 			}
 		},
 		beforeCreate: function() { //防止用户重复登录
@@ -94,7 +104,7 @@
 		width: 400px;
 		border: 1px solid black;
 		border-radius: 10px;
-		box-shadow: 4px 4px 4px 2px rgba(136, 136, 136, 0.5), 8px 8px 8px 4px rgba(136, 136, 136, 0.3);
+		box-shadow: 4px 4px 4px 3px rgba(136, 136, 136, 0.5), -4px -4px 4px 3px rgba(136, 136, 136, 0.5);
 	}
 	
 	.login-row {

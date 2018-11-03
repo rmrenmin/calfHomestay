@@ -78,7 +78,7 @@
 				password: '',
 				rePassword: '',
 				tel: '',
-				src: 'http://localhost/captcha',
+				src: 'http://localhost:81/captcha',
 				//日期相关
 				birthday: '',
 				sex:'男'
@@ -97,20 +97,20 @@
 					tel: this.tel,
 					captcha: this.captcha,
 				});
-				this.axios.post('http://localhost/user/register', data).then(res => {
+				this.axios.post('http://localhost:81/user/register', data).then(res => {
 					console.log(res.data)
 					if(res.data.status === 'error') {
-						this.src = 'http://localhost/captcha?t=' + new Date();
+						this.src = 'http://localhost:81/captcha?t=' + new Date();
 					} else { //注册成功，跳转到登录页面
 						this.$router.push('/login')
 					}
 				}).catch(err => {
-					this.src = 'http://localhost/captcha?t=' + new Date();
+					this.src = 'http://localhost:81/captcha?t=' + new Date();
 					console.log(err)
 				})
 			},
 			changeClick(e) {
-				this.src = 'http://localhost/captcha?t=' + new Date();
+				this.src = 'http://localhost:81/captcha?t=' + new Date();
 			}
 		},
 		
@@ -127,7 +127,7 @@
 		border: 1px solid black;
 		border-radius: 10px;
 		/*box-shadow: 5px 5px 4px #e3e3e3;*/
-		box-shadow: 4px 4px 4px 2px rgba(136, 136, 136, 0.5), 8px 8px 8px 4px rgba(136, 136, 136, 0.3);
+		box-shadow: 4px 4px 4px 2px rgba(136, 136, 136, 0.5), -4px -4px 4px 2px rgba(136, 136, 136, 0.5);
 	}
 	
 	.register-row {

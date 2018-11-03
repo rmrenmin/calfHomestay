@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<Carousel />
-		<Content />
+		<Carousel/>
+		<Content class="content"/>
 	</div>
 </template>
 
@@ -12,7 +12,7 @@ import Content from './index/Content';
 		name: 'Index',
 		components:{
 			Carousel,
-			Content
+			Content,
 		},
 		data() {
 			return {
@@ -22,6 +22,11 @@ import Content from './index/Content';
 	}
 </script>
 
-<style>
-	
+<style scoped>
+	.content {
+		position:relative;
+		top:-60px;
+		z-index: 500;
+	}
+
 </style>

@@ -1,0 +1,12 @@
+CREATE TABLE dummy (
+	`title` VARCHAR(50) NOT NULL COMMENT '房源标题',
+	`price` INT(6) NOT NULL COMMENT '价格',
+	`imglist` TEXT NOT NULL COMMENT '房源图片 json数组',
+	`location` TEXT NOT NULL COMMENT '位置 json对象',city成,district区,detail详细
+	`type` VARCHAR(10) NOT NULL COMMENT '户型',  单间、标间、双人间、套一、套二、套三、别墅
+	`style` VARCHAR(10) NOT NULL COMMENT '风格',  
+	`description` TEXT NOT NULL COMMENT '房源描述',
+	`time` DATETIME NOT NULL COMMENT '上传时间',
+	'period':'空闲时间[start,end]
+	`u_id` INT(10) NOT NULL COMMENT '外键 用户id',
+)

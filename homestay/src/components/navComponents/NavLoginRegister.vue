@@ -6,7 +6,7 @@
 			<router-link to="/register">注册</router-link>
 		</div>
 		<div v-if="$store.state.user.state" class="logout">
-			<NavHeader href="/info" :src="$store.state.user.imgSrc" :nickname="$store.state.user.nickname"/>
+			<NavHeader href="/info/account" :src="$store.state.user.imgSrc" :nickname="$store.state.user.nickname"/>
 			<ul>
 				<li @click="logout">退出</li>
 			</ul>
@@ -29,11 +29,16 @@
 		},
 		methods:{
 			logout(e){//退出登录
-				this.axios.get('http://localhost/user/logout').then(res=>{
-					console.log(res.data)
-					this.$store.commit('logout')
+				this.axios.get('http://localhost:81/user/logout').then(res=>{
+					console.log(res.data);
+					this.$store.commit('logout');
+					//清空localStorage
+					localStorage.clear();
+					//删除cookies
+//					document.cookie = "expires=Thu, 01 Jan 1970 00:00:00 GMT";
+					this.$router.replace('/')
 				}).catch(err=>{
-					console.log('error')
+					console.log('退出时axios错误',err)
 				})
 			}
 		}

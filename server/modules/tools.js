@@ -42,9 +42,20 @@ module.exports.randomString = len => {　　
 	len = len || 10;　　
 	var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';　
 	var maxPos = $chars.length;　　
-	var pwd = '';　　
+	var pwd = 'xn';　　
 	for(i = 0; i < len; i++) {　　　　
 		pwd += $chars.charAt(Math.floor(Math.random() * maxPos));　　
 	}　　
 	return pwd;
+}
+	//检查是否登录
+module.exports.checkLogin = (req,res)=>{
+    if(!req.session.username){
+    	res.json({
+			status: 'error',
+			message: '未登录！'
+		})
+    	return false;
+    }
+    return true
 }

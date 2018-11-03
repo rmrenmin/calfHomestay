@@ -68,6 +68,7 @@ router.post('/login', (req, res) => {
                 }
                 if (results[0].password === body.password) {
                     req.session.username = results[0].username;  //根据项目修改
+                    req.session.nickname = results[0].nickname;  //根据项目修改
                     req.session.imgsrc = results[0].imgsrc;  //根据项目修改
                     req.session.tel = results[0].tel;  //根据项目修改
                     req.session.sex = results[0].sex;  //根据项目修改
@@ -118,11 +119,61 @@ router.post('/login', (req, res) => {
 
 //退出路由
 router.get('/logout',(req,res)=>{
+	console.log('退出成功')
 	req.session=null;
 	res.json({
 		status:'success',
 		message:'退出成功！'
 	})
 })
+
+//修改路由
+router.post('/update', (req, res) => {
+    let body = req.body;
+//	console.log(body)
+	//检查是否登录
+    if(!tools.checkLogin(req,res))return;
+    
+    //验证码验证
+//  if(!tools.captcha(req,res)) return;       //部署时去掉注释
+
+	let sql = 'select * from user where username=?';
+    conn.query(sql, body.username, (err, results) => {
+        if (err) {
+        tools.dbError(err,res);
+            return;
+        }
+        if (results.length === 0) {
+            tools.dbError('账户不存在！',res,'账户不存在！');
+            return;
+        }
+        if (results[0].password === body.password) {
+            let sql = 'update user set username=?,password=?,tel=?,birthday=?,sex=?,nickname=? where username=?';   	
+            conn.query(sql,[body.username,body.newPassword,body.tel,new Date(body.birthday),body.sex,body.nickname,body.username],(err,results)=>{
+            	if (err) {
+        			tools.dbError(err,res);
+            		return;
+        		}
+//          	console.log('session',req.session)
+            	req.session.username = body.username;  //根据项目修改
+                req.session.nickname = body.nickname;  //根据项目修改
+                req.session.tel = body.tel;  //根据项目修改
+                req.session.sex = body.sex;  //根据项目修改
+                req.session.birthday = body.birthday;  //根据项目修改
+                res.json({
+                	status:'success',
+                	message:'修改成功！'
+            	})
+                console.log('修改成功！')
+        })}else {
+            res.json({
+	            status: 'error',
+	            message: '密码错误！'
+        	});
+        }
+
+    })
+})
+
 
 module.exports = router;
