@@ -55,5 +55,6 @@
 	}
 	#info{
 		text-align: center;
+		min-height: 700px;
 	}
 </style>

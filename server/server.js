@@ -102,13 +102,13 @@ app.get('/captcha', (req, res) => {
 
 //上传图片接口
 app.post('/upload', upload.array('images'), (req, res) => {
-	if(!req.session || !req.session.username) {
-		res.json({
-			status: 'error',
-			message: '未登录!'
-		});
-		return
-	};
+//	if(!req.session || !req.session.username) {
+//		res.json({
+//			status: 'error',
+//			message: '未登录!'
+//		});
+//		return
+//	};
 	let data = [];
 	for(const ad of req.files) {
 		let path = hostname + ad.path.replace(/\\/g, '/');

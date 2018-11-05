@@ -71,9 +71,43 @@
 		</el-row>
 		<el-row justify="center" class="content-row">
 			<el-col :span="22" :offset="1">
-				<el-input type="textarea" :rows="2" placeholder="请输入描述内容"  v-model="textarea"> 
-					<template slot="prepend">描述</template>
-				</el-input>
+				<div class="el-input el-input-group el-input-group--prepend">
+					<div class="el-input-group__prepend typeadd">位置</div>
+					<!--<div class="el-input__inner">-->
+					<el-select v-model="selectValue" placeholder="请选择" size="medium" class="el-input__inner pa">
+						<el-option v-for="(item,index) in choose" :key="index" :label="item" :value="item">
+						</el-option>
+					</el-select>
+					<!--</div>-->
+				</div>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="content-row">
+			<el-col :span="22" :offset="1">
+				<div class="el-input el-input-group el-input-group--prepend">
+					<div class="el-input-group__prepend typeadd">详细地址</div>
+					<el-input type="textarea" :rows="2" placeholder="请输入详细地址" v-model="detail" class="el-select el-input__inner pa el-select--medium">
+					</el-input>
+				</div>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="content-row">
+			<el-col :span="22" :offset="1">
+				<div class="el-input el-input-group el-input-group--prepend">
+					<div class="el-input-group__prepend typeadd">描述</div>
+					<el-input type="textarea" :rows="2" placeholder="请输入描述内容" v-model="textarea" class="el-select el-input__inner pa el-select--medium">
+					</el-input>
+				</div>
+			</el-col>
+		</el-row>
+		<el-row justify="center" class="content-row">
+			<el-col :span="22" :offset="1">
+				<div class="el-input el-input-group el-input-group--prepend">
+					<div class="el-input-group__prepend typeadd">上传图片</div>
+					<el-upload class="el-select el-input__inner pa el-select--medium" :show-file-list="false" action="http://localhost:81/upload" multiple :on-success="upsuccess" name="images">
+						<div class="el-upload__text">点击上传 <i class="el-icon-success" v-if="isshow" style="color: green;"></i></div>
+					</el-upload>
+				</div>
 			</el-col>
 		</el-row>
 		<el-row justify="center" class="content-row">
@@ -88,61 +122,71 @@
 		</el-row>
 		<el-row justify="center" class="content-row">
 			<el-col :span="22" :offset="1">
-				<el-button id="content-btn" v-on:click="modify" style="width:100%" type="primary">添加</el-button>
+				<el-button id="content-btn" v-on:click="addhouse" style="width:100%" type="primary">添加</el-button>
 			</el-col>
 		</el-row>
 	</div>
 </template>
 
 <script>
+	//	import Location from '../../../styleComponents/filter/FilterRaduo';
 	export default {
 		name: 'Add',
 		data() {
 			return {
-				checkList:['客栈'],
+				checkList: ['客栈'],
 				captcha: '',
-				textarea:'',
-				title: this.$store.state.user.title,
-				price: this.$store.state.user.price,
-				password: '',
-				newPassword: '',
-				reNewPassword: '',
-				tel: this.$store.state.user.tel,
+				imgSrcList:[],
+				title: null,
+				price: null,
+				start:null,
+				end:null,
+				type: null,
+				selectValue:null,
+				textarea:null,
 				src: 'http://localhost:81/captcha',
-				//日期相关
-				start: this.$store.state.user.start,
-				end: this.$store.state.user.end,
-				type: this.$store.state.user.type,
-				isable: true,
+				isshow:false,
+				choose: [
+					"全部",
+					"武侯区",
+					"成华区",
+					"锦江区",
+					"金牛区",
+					"青羊区",
+					"高新区",
+					"天府新区"
+				],
+				fileList: null,
+				detail:null
+
 			}
 		},
+		components: {
+			//			Location,
+		},
 		methods: {
-			modify(e) {
-				this.isable = !this.isable;
-				if(!this.isable) return;
-				if(this.newPassword !== this.reNewPassword) {
-					console.log('修改失败')
-					return
-				}
+			addhouse(e) {
 				let data = {
+					style: this.checkList.join(';'),
+					captcha: this.captcha,
+					imgSrcList: JSON.stringify(this.imgSrcList),
+					location: this.selectValue,
 					title: this.title,
 					price: this.price,
-					password: this.password,
-					newPassword: this.newPassword,
 					start: this.start,
+					end: this.end,
 					type: this.type,
-					tel: this.tel,
-					captcha: this.captcha,
+					textarea: this.textarea,
+					username:this.$store.state.user.username,
+					detail:this.detail
 				};
-				this.axios.post('http://localhost:81/user/update', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://localhost:81/info/add', this.qs.stringify(data)).then(res => {
 					console.log(res.data)
 					if(res.data.status === 'error') {
 						this.src = 'http://localhost:81/captcha?t=' + new Date();
-					} else { //修改成功，修改state和localStorage
-						this.$store.commit('login', data);
-						for(let item in this.$store.state.user) {
-							localStorage.setItem(item, this.$store.state[item])
-						}
+					} else { //上传成功
+						this.isshow = !this.isshow;
+						console.log(this.imgSrcList)
 					}
 				}).catch(err => {
 					this.src = 'http://localhost:81/captcha?t=' + new Date();
@@ -151,14 +195,19 @@
 			},
 			changeClick(e) {
 				this.src = 'http://localhost:81/captcha?t=' + new Date();
-			}
+			},
+
+			upsuccess(res, file, fileList) {
+				this.imgSrcList.push(res.data[0])
+			},
+			
 		},
 
 	}
 </script>
 </script>
 
-<style scoped>
+<style>
 	.content-box {
 		position: relative;
 		/*left: calc(50% - 200px);*/
@@ -184,7 +233,7 @@
 		width: 100% !important;
 	}
 	
-	.type {
+	.typeadd {
 		height: 40px;
 	}
 	
@@ -193,5 +242,17 @@
 		border-color: #e4e7ed;
 		color: #c0c4cc;
 		cursor: not-allowed;
+	}
+	
+	input[readonly="readonly"] {
+		border: none !important;
+		outline: none !important;
+	}
+	
+	.pa {
+		padding: 0px;
+	}
+	textarea{
+		border: none !important;
 	}
 </style>
