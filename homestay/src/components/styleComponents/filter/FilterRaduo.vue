@@ -10,7 +10,7 @@
 <script>
 	export default {
         name: 'FilterRadio',
-        props:['radioli'],
+		props:["radioli","info","p"],
 		components:{
 
 		},
@@ -19,6 +19,15 @@
                 radio:'全部',
 			}
 		},
+		watch:{
+			radio(val){
+				if(val=='全部'){
+					this.info[this.p]="";
+					return;
+				}
+				this.info[this.p]=val;
+			}
+		}
 	}
 </script>
 

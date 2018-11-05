@@ -62,7 +62,7 @@ export default {
     searchHouse(){
       console.log(this.info);
       let data=this.qs.stringify(this.info);
-      this.axios.post('http://localhost:81/index/search',data)
+      this.axios.post('http://xiaoyu:81/index/search',data)
       .then(res => {
         console.log(res.data);
       })

@@ -1,7 +1,7 @@
 <template>
 	<div class="stylefilter">
         <FilterNav />
-		<FilterContent />
+		<FilterContent @toParent="sent"/>
 	</div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
   data() {
     return {};
   },
+  methods:{
+    sent(data){
+      this.$emit("toParent",data);
+    }
+  }
 };
 </script>
 

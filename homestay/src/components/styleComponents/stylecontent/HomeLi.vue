@@ -94,6 +94,32 @@ img {
   border-radius: 6px;
   margin-bottom: 10px;
 }
+img:hover {
+  animation: img-change 1s;
+  animation-fill-mode:forwards;
+}
+@keyframes img-change {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    filter: blur(1.5px);
+  }
+  100% {
+    transform: scale(1.05);
+    filter: blur(0px);
+  }
+}
+img:hover+.price {
+  animation: dispear 1s;
+  animation-fill-mode:forwards;
+}
+@keyframes dispear {
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
 .title {
   font-size: 16px;
   color: #484848;
@@ -113,7 +139,7 @@ ul {
 li {
   list-style: none;
   float: left;
-  margin-right: 10px;
+  margin-right: 8px;
   line-height: 22px;
 }
 span {
@@ -125,7 +151,7 @@ span {
     padding: 0 10px;
     text-align: center;
     position: absolute;
-    bottom: 70px;
+    top: 166px;
     left: 0;
     font-size: 18px;
     color: #fff;

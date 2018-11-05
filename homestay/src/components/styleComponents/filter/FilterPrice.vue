@@ -11,21 +11,22 @@
         <span>￥{{value[0]}}</span>
         <span>-￥{{value[1]}}</span>
     </div>
-    <span class="sureprice" @click="sureprice">确定</span>
+    <span class="sureprice" @click="surePrice">确定</span>
 </div>
 </template>
 
 <script>
 export default {
   name: "FilterPrice",
+  props:["info","p"],
   data() {
     return {
       value: [0, 1000]
     };
   },
   methods: {
-    sureprice() {
-      console.log(this.value);
+    surePrice() {
+      this.info[this.p]=this.value;
     }
   }
 };

@@ -14,10 +14,10 @@ router.post('/order', (req, res) => {
 		status = '未付款'
 	} else if(body.status == '2') {
 		status = '已付款'
-	} else {
+	} else{
 		status = '已取消'
 	}
-	//	console.log(body)
+//	console.log(body)
 	async.waterfall([
 		function(cb) {
 			//			if(!tools.checkLogin(req,res)){
@@ -103,7 +103,7 @@ router.post('/order', (req, res) => {
 			}
 		}
 	], (err, re) => {
-		//		console.log(re)
+//		console.log(re)
 		res.json(re)
 	})
 })
@@ -140,10 +140,10 @@ router.post('/house', (req, res) => {
 		status = '未付款'
 	} else if(body.status == '2') {
 		status = '已付款'
-	} else {
+	} else{
 		status = '已取消'
 	}
-	//	console.log(body)
+//	console.log(body)
 	async.waterfall([
 		function(cb) {
 			//			if(!tools.checkLogin(req,res)){
@@ -184,17 +184,14 @@ router.post('/house', (req, res) => {
 					tools.dbError(err, res);
 					return
 				}
-				cb(null, {
-					data: re,
-					count: count
-				})
+				cb(null, {data:re, count:count})
 			})
 
 		},
-
+		
 	], (err, re) => {
-		//		console.log(re)
-		for(let i in re.data) {
+//		console.log(re)
+		for(let i in re.data){
 			re.data[i].imglist = JSON.parse(re.data[i].imglist)[0];
 			re.data[i].location = JSON.parse(re.data[i].location).city;
 			re.data[i].theme = re.data[i].style;
@@ -225,31 +222,10 @@ router.post('/housestatus', (req, res) => {
 })
 
 //添加房源
-router.post('/add', (req, res) => {
-	console.log(req.body)
-	//	if(!tools.captcha(req,res)){
-	//		return
-	//	}
-	let body = req.body;
-	let sql = 'select u_id from user where username=?';
-	conn.query(sql, body.username, (err, re) => {
-		if(err) {
-			tools.dbError(err, res);
-			return
-		}
-		let period = JSON.stringify([body.start, body.end]);
-		let location = JSON.stringify({city:'成都',district:body.location,detail:body.detail})
-		let sql = 'insert into house (title,price,imglist,location,type,style,period,description,time,u_id)values(?,?,?,?,?,?,?,?,?,?)'
-		conn.query(sql, [body.title, body.price, body.imgSrcList, location, body.type, body.style,period, body.textarea, new Date(), re[0].u_id], (err, re) => {
-			if(err) {
-				tools.dbError(err, res);
-				return
-			}
-			res.json({
-				status: 'success',
-				message: '成功'
-			})
-		})
+router.post('/add',(req,res)=>{
+	res.json({
+		status:'success',
+		message:'成功'
 	})
 })
 

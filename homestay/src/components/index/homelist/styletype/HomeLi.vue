@@ -40,20 +40,18 @@ img {
   border-radius: 12px;
 }
 img:hover {
-  animation: img-change 1.5s;
+  animation: img-change 1s;
+  transform: scale(1.06);
+  filter: blur(1.5px);
 }
 @keyframes img-change {
   0% {
     transform: scale(1);
     filter: blur(0px);
   }
-  60% {
-    transform: scale(1.04);
-    filter: blur(1.5px);
-  }
   100% {
-    transform: scale(1);
-    filter: blur(0px);
+    transform: scale(1.06);
+    filter: blur(1.5px);
   }
 }
 

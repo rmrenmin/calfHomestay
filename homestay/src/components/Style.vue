@@ -1,7 +1,7 @@
 <template>
 	<div class="style">
-    	<StyleFilter class="one"/>
-		<StyleContent :houselist="houselist" class="two" />
+    <StyleFilter class="one" @toParent="searchData" />
+		<StyleContent :houselist="houselist" class="two" @showParent="showData" :count="count"/>
 		<StyleAside class="three"/>
 	</div>
 </template>
@@ -14,23 +14,35 @@ export default {
   name: "Style",
   data() {
     return {
-		houselist:[]
-	};
+      houselist: [],
+      count: 6
+    };
   },
   components: {
     StyleFilter,
     StyleAside,
     StyleContent
   },
-  beforeCreate() {
-	  this.styletype = this.$route.query.style;
-
-    let obj = { style: this.styletype };
-    let data = this.qs.stringify(obj);
-    this.axios.post("http://localhost:81/index/style", data).then(res => {
-	  this.houselist=res.data.results;
-	  console.log("style===="+JSON.stringify(this.houselist));
-    });
+  created() {
+    this.axios
+      .post(
+        "http://xiaoyu:81/index/style",
+        this.qs.stringify({ style: this.$route.query.style })
+      )
+      .then(res => {
+        this.houselist = res.data.data;
+        this.count = res.data.count;
+        console.log("count====" +JSON.stringify(this.count));
+      });
+  },
+  methods: {
+    showData(data) {
+      this.houselist = data;
+    },
+    searchData(data){
+      this.houselist = data.houselist;
+      this.count = data.count;
+    }
   }
 };
 </script>
@@ -48,11 +60,11 @@ export default {
 .two {
   position: absolute;
   top: 200px;
-  left: 0px;
+  left: 30px;
 }
 .three {
   position: absolute;
   top: 200px;
-  right: 0px;
+  right: 30px;
 }
 </style>
