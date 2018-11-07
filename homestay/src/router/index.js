@@ -10,6 +10,8 @@ import Order from '@/components/user/infonav/Order'
 import House from '@/components/user/infonav/House'
 import Style from '@/components/Style'
 import HouseInfo from '@/components/HouseInfo'
+import HomeList from '@/components/index/HomeList'
+// import StyleContent from '@/components/styleComponents/StyleContent'
 Vue.use(Router)
 
 export default new Router({
@@ -17,7 +19,14 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index
+      component: Index,
+      children:[
+      	{
+      		path:'',
+      		name:'HomeList',
+      		component:HomeList,
+      	}
+      ]
     },
     {
       path: '/user',//测试用

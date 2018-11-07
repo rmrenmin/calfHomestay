@@ -1,7 +1,7 @@
 <template>
 	<div class="index-content">
         <Search />
-		<Homelist />
+		<router-view/>
     </div>
 </template>
 

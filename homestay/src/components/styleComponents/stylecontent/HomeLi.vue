@@ -26,7 +26,7 @@ export default {
     };
   },
   created() {
-    console.log("=========" + JSON.parse(this.homeli.imglist)[0]);
+    // console.log("=========" + JSON.parse(this.homeli.imglist)[0]);
     this.calNumber();
     this.getTag();
   },
@@ -34,7 +34,7 @@ export default {
     routerTo() {
       this.$router.push({
         path: "/houseinfo",
-        query: { h_id: this.homeli.h_id }
+        query: { style: this.$route.query.style||this.$route.query.area,h_id: this.homeli.h_id }
       });
     },
     calNumber() {
@@ -66,6 +66,7 @@ export default {
     },
     getTag() {
       let temp = JSON.parse(this.homeli.star).total;
+      console.log("temp=="+temp);
       if (temp >= 5) {
         this.tag = "完美！";
         return;

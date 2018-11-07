@@ -1,7 +1,7 @@
 <template>
 	<div class="stylefilter">
-        <FilterNav />
-		<FilterContent @toParent="sent"/>
+     <FilterNav />
+		 <FilterContent @toParent="sent"/>
 	</div>
 </template>
 

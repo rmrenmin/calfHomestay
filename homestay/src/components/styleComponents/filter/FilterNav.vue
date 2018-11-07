@@ -15,7 +15,7 @@ export default {
 	}
   },
   created() {
-	  this.style=this.$route.query.style;
+	  this.style=this.$route.query.style||this.$route.query.area;
   },
 };
 </script>

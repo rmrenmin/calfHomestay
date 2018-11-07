@@ -60,12 +60,10 @@ export default {
       console.log("111"+this.info);
     },
     searchHouse(){
-      console.log(this.info);
-      let data=this.qs.stringify(this.info);
-      this.axios.post('http://xiaoyu:81/index/search',data)
-      .then(res => {
-        console.log(res.data);
-      })
+      this.$router.push({
+        path: "/style",
+        query: this.info
+      });
     }
   },
   components: {

@@ -24,6 +24,14 @@ export default {
     StyleContent
   },
   created() {
+    if(!this.$route.query.style){
+      let data=this.qs.stringify(this.$route.query);
+      this.axios.post('http://xiaoyu:81/index/search',data)
+      .then(res => {
+          this.houselist = res.data.data;
+          this.count = res.data.count;
+      })
+    }else{
     this.axios
       .post(
         "http://xiaoyu:81/index/style",
@@ -33,7 +41,7 @@ export default {
         this.houselist = res.data.data;
         this.count = res.data.count;
         console.log("count====" +JSON.stringify(this.count));
-      });
+      });}
   },
   methods: {
     showData(data) {
