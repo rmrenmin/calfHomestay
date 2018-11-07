@@ -18,7 +18,6 @@ router.post('/search', (req, res) => {
 	else if (n <= 2) {
 		type = '%间%';
 	}
-	console.log(area,type);
 	//根据信息去数据库查找
 	async.waterfall([
 		function (cb) {
