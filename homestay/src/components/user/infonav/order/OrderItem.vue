@@ -27,10 +27,10 @@
 			<el-col :span="3" class="cell flexbox">
 				<span>{{status}}</span>
 			</el-col>
-			<el-col :span="2" class="cell flexbox" v-if="status=='未付款'">
+			<el-col :span="2" class="cell flexbox" v-if="status=='已预约'">
 				<span class="btn active" @click="cancelClick">取消</span>
 			</el-col>
-			<el-col :span="status=='未付款'?2:4" class="flexbox">
+			<el-col :span="status=='已预约'?2:4" class="flexbox">
 				<span class="btn active" @click="delClick">删除</span>
 			</el-col>
 		</el-row>

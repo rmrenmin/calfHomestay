@@ -37,14 +37,26 @@
 		name: 'Login',
 		data() {
 			return {
-				captcha: '',
-				username: '',
-				password: '',
+				captcha: null,
+				username: null,
+				password: null,
 				src: 'http://localhost:81/captcha',
 			}
 		},
 		methods: {
 			login(e) {
+				if(!this.username){
+					this.tip('用户名未输入')
+					return
+				}
+				if(!this.password){
+					this.tip('密码未输入')
+					return
+				}
+				if(!this.captcha){
+					this.tip('验证码未输入')
+					return
+				}
 				let data = this.qs.stringify({
 					username: this.username,
 					password: this.password,
@@ -82,6 +94,13 @@
 			},
 			changeClick(e) {
 				this.src = 'http://localhost:81/captcha?t=' + new Date();
+			},
+			tip(m="消息"){
+				this.message({
+					type:'error',
+					center:true,
+					message:this.$createElement('p',{style:'z-index:9999;'},m)
+				})
 			}
 		},
 		beforeCreate: function() { //防止用户重复登录

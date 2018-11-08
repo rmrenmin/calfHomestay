@@ -132,7 +132,7 @@ router.post('/update', (req, res) => {
     let body = req.body;
 //	console.log(body)
 	//检查是否登录
-    if(!tools.checkLogin(req,res))return;
+//  if(!tools.checkLogin(req,res))return;
     
     //验证码验证
 //  if(!tools.captcha(req,res)) return;       //部署时去掉注释
@@ -175,5 +175,46 @@ router.post('/update', (req, res) => {
     })
 })
 
+//下单预约
 
+/**
+ * { h_id: '1',
+  price: '200',
+  number: '20',
+  username: '2',
+  start: '2018-11-07',
+  end: '2018-11-15' }
+ */
+router.post('/putorder',(req,res)=>{
+	let body = req.body;
+	console.log(body)
+	async.waterfall([
+		function(cb){
+			let sql = 'select u_id from user where username=?'
+			conn.query(sql,body.username,(err,re)=>{
+				if(err){
+					tools.dbError(err,res)
+					return 
+				};
+				cb(null,re[0].u_id);
+			})
+		},
+		function(u_id,cb){
+			let sql = 'insert into order_list (time,price,number,start,end,h_id,u_id1)values(?,?,?,?,?,?,?)';
+			conn.query(sql,[new Date(),body.price,body.number,new Date(body.start),new Date(body.end),body.h_id,u_id],(err,re)=>{
+				if(err){
+					tools.dbError(err,res)
+					return 
+				};
+				res.json({
+					status:'success',
+					message:'预约成功'
+				})
+				cb(null,re)
+			})
+		}
+	],(err, result) => {
+        console.log(result);
+   })
+})
 module.exports = router;

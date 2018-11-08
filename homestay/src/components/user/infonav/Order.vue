@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h2>订单管理</h2>
+		<h2>预约管理</h2>
 		<el-row class="mybox">
 			<el-col :span="3" :offset="1" class="view mypadding">
 				<el-row class="row-n" v-for="(item,i) in tabs" :key="i">
@@ -23,9 +23,9 @@
 	import Ordering from './order/Ordering';
 	
 	let tabs = [
-				{component:Ordering,title:'未付款'},
+				{component:Ordering,title:'已预约'},
 				{component:Cancel,title:'已取消'},
-				{component:History,title:'已付款'}
+				{component:History,title:'已完成'}
 			]
 	export default {
 		name: 'House',

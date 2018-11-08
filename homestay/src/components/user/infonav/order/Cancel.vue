@@ -14,7 +14,7 @@
 				<span>价格</span>
 			</el-col>
 			<el-col :span="3" class="cell flexbox">
-				<span>订单状态</span>
+				<span>预约状态</span>
 			</el-col>
 			<el-col :span="2" class="cell flexbox" v-if="status=='已取消'">
 				<span>取消</span>

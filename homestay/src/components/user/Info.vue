@@ -5,7 +5,7 @@
 					<info-nav :href="account">账户管理</info-nav>
 			</el-row>
 			<el-row class="row-n">
-					<info-nav :href="order">订单管理</info-nav>
+					<info-nav :href="order">预约管理</info-nav>
 			</el-row>
 			<el-row class="row-n">
 					<info-nav :href="house">房源管理</info-nav>

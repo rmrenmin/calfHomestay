@@ -9,10 +9,12 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import qs from 'qs';
 import VueLazyload from 'vue-lazyload';
+import { Message } from 'element-ui';
 
 //axios.defaults.withCredentials=true;
 Vue.prototype.axios = axios;
 Vue.prototype.qs = qs;
+Vue.prototype.message = Message;
 
 //cookies
 //设置cookies

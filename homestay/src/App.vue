@@ -41,7 +41,7 @@
 		text-align: center;
 		line-height: 60px;
 		padding: 0px;
-		z-index: 10000;
+		z-index: 999;
 		
 	}
 	

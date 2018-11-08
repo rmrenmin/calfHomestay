@@ -73,20 +73,45 @@
 		name: 'Register',
 		data() {
 			return {
-				captcha: '',
+				captcha: null,
 				username: '',
 				password: '',
 				rePassword: '',
 				tel: '',
 				src: 'http://localhost:81/captcha',
 				//日期相关
-				birthday: '',
+				birthday: '1900-01-01',
 				sex:'男'
 			}
 		},
 		methods: {
 			register(e) {
+				//用户名正则，4到16位（字母，数字，下划线，减号）
+				var uPattern = /^[a-zA-Z0-9_-]{4,16}$/;
+				if(!uPattern.test(this.username)){
+					this.tip('用户名为4到16位（字母，数字，下划线，减号）')
+					return
+				}
+				//手机号正则
+				var mPattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$/;
+				if(!mPattern.test(this.tel)){
+					this.tip('手机号有误')
+					return
+				}
+				//密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
+				var pPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/;
+				if(!pPattern.test(this.password)){
+					this.tip('密码最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符')
+					return
+				}
+        		
+        		//以前代码
 				if(this.rePassword !== this.password) {
+					this.tip('两次密码不一致')
+					return
+				}
+				if(!this.captcha) {
+					this.tip('验证码未输入')
 					return
 				}
 				let data = this.qs.stringify({
@@ -111,6 +136,13 @@
 			},
 			changeClick(e) {
 				this.src = 'http://localhost:81/captcha?t=' + new Date();
+			},
+			tip(m="消息"){
+				this.message({
+					type:'error',
+					center:true,
+					message:this.$createElement('p',{style:'z-index:9999;'},m)
+				})
 			}
 		},
 		

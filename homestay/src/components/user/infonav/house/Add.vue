@@ -135,19 +135,18 @@
 		data() {
 			return {
 				checkList: ['客栈'],
-				captcha: '',
+				captcha: null,
 				imgSrcList:[],
 				title: null,
 				price: null,
 				start:null,
 				end:null,
-				type: null,
+				type: '标间',
 				selectValue:null,
 				textarea:null,
 				src: 'http://localhost:81/captcha',
 				isshow:false,
 				choose: [
-					"全部",
 					"武侯区",
 					"成华区",
 					"锦江区",
@@ -180,13 +179,31 @@
 					username:this.$store.state.user.username,
 					detail:this.detail
 				};
+				//输入验证
+				//价格必须为number
+				if(isNaN(this.price)){
+					this.tip('价格必须为数字')
+					return
+				}
+				//租期验证
+				if((new Date(this.end)-new Date(this.start))<=0){
+					this.tip('开始日期必须小于结束日期')
+					return
+				}
+				//其他验证
+				for(let item in data){
+					if(!data[item]||data[item]=='[]'){
+						this.tip('有未填项')
+						return
+					}
+				}
 				this.axios.post('http://localhost:81/info/add', this.qs.stringify(data)).then(res => {
 					console.log(res.data)
 					if(res.data.status === 'error') {
 						this.src = 'http://localhost:81/captcha?t=' + new Date();
 					} else { //上传成功
-						this.isshow = !this.isshow;
-						console.log(this.imgSrcList)
+//						console.log(this.imgSrcList)
+						this.tip('添加成功！','success')
 					}
 				}).catch(err => {
 					this.src = 'http://localhost:81/captcha?t=' + new Date();
@@ -199,7 +216,15 @@
 
 			upsuccess(res, file, fileList) {
 				this.imgSrcList.push(res.data[0])
+				this.isshow = true;
 			},
+			tip(m="消息",type="error"){
+				this.message({
+					type:type,
+					center:true,
+					message:this.$createElement('p',{style:'z-index:9999;'},m)
+				})
+			}
 			
 		},
 

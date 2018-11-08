@@ -11,9 +11,9 @@ router.post('/order', (req, res) => {
 	//订单状态
 	let status = null;
 	if(body.status == '1') {
-		status = '未付款'
+		status = '已预约'
 	} else if(body.status == '2') {
-		status = '已付款'
+		status = '已完成'
 	} else {
 		status = '已取消'
 	}
@@ -52,8 +52,13 @@ router.post('/order', (req, res) => {
 			if(start < 0) {
 				start = 0;
 			}
-			let sql = 'select * from order_list where u_id1=?&&status=? limit ?,?';
-			conn.query(sql, [re.uid, parseInt(body.status), start, parseInt(body.pageSize)], (err, re) => {
+			if(body.mobile){
+				var sql = 'select * from order_list where u_id1=?&&status=?';
+			}else{
+				var sql = 'select * from order_list where u_id1=?&&status=? limit ?,?';
+			}
+			
+			conn.query(sql, body.mobile?[re.uid, parseInt(body.status)]:[re.uid, parseInt(body.status), start, parseInt(body.pageSize)], (err, re) => {
 				if(err) {
 					tools.dbError(err, res);
 					return
@@ -137,9 +142,9 @@ router.post('/house', (req, res) => {
 	//订单状态
 	let status = null;
 	if(body.status == '1') {
-		status = '未付款'
+		status = '已预约'
 	} else if(body.status == '2') {
-		status = '已付款'
+		status = '已完成'
 	} else {
 		status = '已取消'
 	}
