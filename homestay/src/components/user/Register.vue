@@ -78,7 +78,7 @@
 				password: '',
 				rePassword: '',
 				tel: '',
-				src: 'http://localhost:81/captcha',
+				src: 'http://xiaoyu:81/captcha',
 				//日期相关
 				birthday: '1900-01-01',
 				sex:'男'
@@ -122,20 +122,20 @@
 					tel: this.tel,
 					captcha: this.captcha,
 				});
-				this.axios.post('http://localhost:81/user/register', data).then(res => {
+				this.axios.post('http://xiaoyu:81/user/register', data).then(res => {
 					console.log(res.data)
 					if(res.data.status === 'error') {
-						this.src = 'http://localhost:81/captcha?t=' + new Date();
+						this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					} else { //注册成功，跳转到登录页面
 						this.$router.push('/login')
 					}
 				}).catch(err => {
-					this.src = 'http://localhost:81/captcha?t=' + new Date();
+					this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					console.log(err)
 				})
 			},
 			changeClick(e) {
-				this.src = 'http://localhost:81/captcha?t=' + new Date();
+				this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 			},
 			tip(m="消息"){
 				this.message({

@@ -56,7 +56,7 @@
 			},
 			myMthod(meaasge, status) {
 			if(confirm(meaasge)) {
-				this.axios.post('http://localhost:81/info/orderstatus', this.qs.stringify({
+				this.axios.post('http://xiaoyu:81/info/orderstatus', this.qs.stringify({
 					status: status,
 					id: this.id
 				})).then((res) => {

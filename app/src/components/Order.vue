@@ -57,7 +57,7 @@
 					status:status,
 					mobile:true
 				}
-				this.axios.post('http://localhost:81/info/order',this.qs.stringify(data)).then(res=>{
+				this.axios.post('http://xiaoyu:81/info/order',this.qs.stringify(data)).then(res=>{
 					console.log(res.data.data)
 					this.data = res.data.data
 				}).catch(err=>{

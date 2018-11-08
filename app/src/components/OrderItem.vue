@@ -26,7 +26,7 @@
 					status: 3,
 					id: this.id
 				}
-				this.axios.post('http://localhost:81/info/orderstatus', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/info/orderstatus', this.qs.stringify(data)).then(res => {
 					console.log(res.data)
 					this.order()
 				}).catch(err => {
@@ -46,7 +46,7 @@
 					status: status,
 					mobile: true
 				}
-				this.axios.post('http://localhost:81/info/order', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/info/order', this.qs.stringify(data)).then(res => {
 					console.log(res.data.data)
 					console.log(this.$parent.$data)
 					this.$emit('change-date', res.data.data)

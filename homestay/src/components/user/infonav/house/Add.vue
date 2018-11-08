@@ -104,7 +104,7 @@
 			<el-col :span="22" :offset="1">
 				<div class="el-input el-input-group el-input-group--prepend">
 					<div class="el-input-group__prepend typeadd">上传图片</div>
-					<el-upload class="el-select el-input__inner pa el-select--medium" :show-file-list="false" action="http://localhost:81/upload" multiple :on-success="upsuccess" name="images">
+					<el-upload class="el-select el-input__inner pa el-select--medium" :show-file-list="false" action="http://xiaoyu:81/upload" multiple :on-success="upsuccess" name="images">
 						<div class="el-upload__text">点击上传 <i class="el-icon-success" v-if="isshow" style="color: green;"></i></div>
 					</el-upload>
 				</div>
@@ -144,7 +144,7 @@
 				type: '标间',
 				selectValue:null,
 				textarea:null,
-				src: 'http://localhost:81/captcha',
+				src: 'http://xiaoyu:81/captcha',
 				isshow:false,
 				choose: [
 					"武侯区",
@@ -197,21 +197,21 @@
 						return
 					}
 				}
-				this.axios.post('http://localhost:81/info/add', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/info/add', this.qs.stringify(data)).then(res => {
 					console.log(res.data)
 					if(res.data.status === 'error') {
-						this.src = 'http://localhost:81/captcha?t=' + new Date();
+						this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					} else { //上传成功
 //						console.log(this.imgSrcList)
 						this.tip('添加成功！','success')
 					}
 				}).catch(err => {
-					this.src = 'http://localhost:81/captcha?t=' + new Date();
+					this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					console.log(err)
 				})
 			},
 			changeClick(e) {
-				this.src = 'http://localhost:81/captcha?t=' + new Date();
+				this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 			},
 
 			upsuccess(res, file, fileList) {

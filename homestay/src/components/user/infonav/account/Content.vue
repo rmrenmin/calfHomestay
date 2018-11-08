@@ -94,7 +94,7 @@
 				newPassword:'',
 				reNewPassword: '',
 				tel: this.$store.state.user.tel,
-				src: 'http://localhost:81/captcha',
+				src: 'http://xiaoyu:81/captcha',
 				//日期相关
 				birthday: this.$store.state.user.birthday,
 				sex:this.$store.state.user.sex,
@@ -121,10 +121,10 @@
 					tel: this.tel,
 					captcha: this.captcha,
 				};
-				this.axios.post('http://localhost:81/user/update', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/user/update', this.qs.stringify(data)).then(res => {
 					console.log(res.data)
 					if(res.data.status === 'error') {
-						this.src = 'http://localhost:81/captcha?t=' + new Date();
+						this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					} else { //修改成功，修改state和localStorage
 						this.$store.commit('login', data);
 						for(let item in this.$store.state.user){
@@ -132,12 +132,12 @@
 						}
 					}
 				}).catch(err => {
-					this.src = 'http://localhost:81/captcha?t=' + new Date();
+					this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					console.log(err)
 				})
 			},
 			changeClick(e) {
-				this.src = 'http://localhost:81/captcha?t=' + new Date();
+				this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 			}
 		},
 		

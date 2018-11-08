@@ -50,7 +50,7 @@
 //						complete: '正在进行',
 //						name: '小牛民宿',
 //						dateDiff: '20',
-//						url: 'http://localhost:81/upload/1.jpg'
+//						url: 'http://xiaoyu:81/upload/1.jpg'
 //					},
 				]
 			}
@@ -66,7 +66,7 @@
 				//val为当前页面
 				//根据currentPage变化获取当前页的显示内容
 				//发送axios根据currPage和pageSize、username获取数据
-				this.axios.post('http://localhost:81/info/order',this.qs.stringify({
+				this.axios.post('http://xiaoyu:81/info/order',this.qs.stringify({
 					'currPage':this.currPage,
 					'pageSize':this.pageSize,
 					'username':this.$store.state.user.username,
@@ -81,7 +81,7 @@
 		},
 		created:function(){
 			console.log(this.currPage)
-			this.axios.post('http://localhost:81/info/order',this.qs.stringify({
+			this.axios.post('http://xiaoyu:81/info/order',this.qs.stringify({
 					'currPage':this.currPage,
 					'pageSize':this.pageSize,
 					'username':this.$store.state.user.username,

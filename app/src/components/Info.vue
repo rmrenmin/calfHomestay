@@ -3,7 +3,7 @@
 		<x-header :left-options="{backText:'返回'}" :title="title"></x-header>
 		<view-box>
 			<group style="text-align: center;">
-				<x-img :src="imgsrc" default-src="http://localhost:81/upload/1.jpg" class="header"></x-img>
+				<x-img :src="imgsrc" default-src="http://xiaoyu:81/upload/1.jpg" class="header"></x-img>
 			</group>
 			<group>
 				<x-input title="用户名" v-model="username" type="text" disabled></x-input>
@@ -47,7 +47,7 @@
 				loginState: localStorage.getItem('loginState'),
 				text: '修改',
 				disabled: false,
-				src: 'http://localhost:81/captcha',
+				src: 'http://xiaoyu:81/captcha',
 				imgsrc:localStorage.getItem('imgsrc'),
 				//账户信息
 				username: localStorage.getItem('username'),
@@ -78,10 +78,10 @@
 		},
 		methods: {
 			upCaptcha(e) {
-				this.src = 'http://localhost:81/captcha?t=' + new Date()
+				this.src = 'http://xiaoyu:81/captcha?t=' + new Date()
 			},
 			logout(e) {
-				this.axios.get('http://localhost:81/user/logout').then(res => {
+				this.axios.get('http://xiaoyu:81/user/logout').then(res => {
 					console.log(res.data);
 					localStorage.clear();
 					this.$router.push('/')
@@ -107,7 +107,7 @@
 					captcha: this.captcha
 
 				}
-				this.axios.post('http://localhost:81/user/update', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/user/update', this.qs.stringify(data)).then(res => {
 					console.log(res.data)
 					if(res.data.status == 'success') {
 						this.$vux.alert.show({

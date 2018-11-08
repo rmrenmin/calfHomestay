@@ -108,7 +108,7 @@
 					start:this.start,
 					end:this.end
 				}
-				this.axios.post('http://localhost:81/user/putorder',this.qs.stringify(data)).then(res=>{
+				this.axios.post('http://xiaoyu:81/user/putorder',this.qs.stringify(data)).then(res=>{
 					console.log(res.data)
 					
 					if(res.data.status=='success'){

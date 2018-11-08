@@ -47,7 +47,7 @@
 					price: [0, 1000]
 				},
 			}
-			this.axios.post('http://localhost:81/index/style/search', this.qs.stringify(data)).then(res => {
+			this.axios.post('http://xiaoyu:81/index/style/search', this.qs.stringify(data)).then(res => {
 				this.search = res.data.data.map(val => {
 					return {
 						val:val,
@@ -79,7 +79,7 @@
 						price: [0, 1000]
 					},
 				}
-				this.axios.post('http://localhost:81/index/style/search', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/index/style/search', this.qs.stringify(data)).then(res => {
 					this.search = res.data.data.map(val => {
 						return {
 							val:val,

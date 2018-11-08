@@ -28,7 +28,7 @@
 				username: null,
 				password: null,
 				captcha: null,
-				src: 'http://localhost:81/captcha'
+				src: 'http://xiaoyu:81/captcha'
 			}
 		},
 		components: {
@@ -40,7 +40,7 @@
 		},
 		methods: {
 			upCaptcha(e) {
-				this.src = 'http://localhost:81/captcha?t=' + new Date()
+				this.src = 'http://xiaoyu:81/captcha?t=' + new Date()
 			},
 			login(e) {
 				if(!(this.username&&this.password&&this.captcha)){
@@ -55,7 +55,7 @@
 					password: this.password,
 					captcha: this.captcha,
 				}
-				this.axios.post('http://localhost:81/user/login', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/user/login', this.qs.stringify(data)).then(res => {
 					console.log('登陆成功', res.data)
 					if(res.data.status == 'error') {
 						console.log('登陆失败')

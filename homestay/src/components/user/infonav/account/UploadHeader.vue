@@ -11,7 +11,7 @@
 		data() {
 			return {
 				src: this.$store.state.user.imgSrc,
-				uploadSrc: 'http://localhost:81/upload'
+				uploadSrc: 'http://xiaoyu:81/upload'
 			};
 		},
 		methods: {

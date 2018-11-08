@@ -46,7 +46,7 @@
 				tel: '',
 				sex: '男',
 				birthday: '1900-01-01',
-				src: 'http://localhost:81/captcha'
+				src: 'http://xiaoyu:81/captcha'
 			}
 		},
 		components: {
@@ -60,7 +60,7 @@
 		},
 		methods: {
 			upCaptcha(e) {
-				this.src = 'http://localhost:81/captcha?t=' + new Date()
+				this.src = 'http://xiaoyu:81/captcha?t=' + new Date()
 			},
 			register(e) {
 				if(!(this.username&&this.password&&this.captcha&&this.repassword&&this.tel)){
@@ -81,9 +81,9 @@
 					captcha: this.captcha,
 				}
 				console.log(data)
-				this.axios.post('http://localhost:81/user/register', this.qs.stringify(data)).then(res => {
+				this.axios.post('http://xiaoyu:81/user/register', this.qs.stringify(data)).then(res => {
 					console.log('注册成功', res.data)
-					this.axios.get('http://localhost:81/user/logout').then(res => {
+					this.axios.get('http://xiaoyu:81/user/logout').then(res => {
 						console.log(res.data);
 					}).catch(err => {
 						console.log(err)

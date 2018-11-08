@@ -29,7 +29,7 @@
 		},
 		methods:{
 			logout(e){//退出登录
-				this.axios.get('http://localhost:81/user/logout').then(res=>{
+				this.axios.get('http://xiaoyu:81/user/logout').then(res=>{
 					console.log(res.data);
 					this.$store.commit('logout');
 					//清空localStorage

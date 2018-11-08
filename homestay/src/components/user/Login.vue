@@ -40,7 +40,7 @@
 				captcha: null,
 				username: null,
 				password: null,
-				src: 'http://localhost:81/captcha',
+				src: 'http://xiaoyu:81/captcha',
 			}
 		},
 		methods: {
@@ -62,10 +62,10 @@
 					password: this.password,
 					captcha: this.captcha
 				});
-				this.axios.post('http://localhost:81/user/login', data).then(res => {
+				this.axios.post('http://xiaoyu:81/user/login', data).then(res => {
 					//					console.log(res.data)
 					if(res.data.status === 'error') {
-						this.src = 'http://localhost:81/captcha?t=' + new Date();
+						this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					} else { //登录成功修改状态
 						let user = {
 							imgSrc: res.data.message.imgsrc,
@@ -88,12 +88,12 @@
 						this.$router.push('/')
 					}
 				}).catch(err => {
-					this.src = 'http://localhost:81/captcha?t=' + new Date();
+					this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 					console.log(err)
 				})
 			},
 			changeClick(e) {
-				this.src = 'http://localhost:81/captcha?t=' + new Date();
+				this.src = 'http://xiaoyu:81/captcha?t=' + new Date();
 			},
 			tip(m="消息"){
 				this.message({
