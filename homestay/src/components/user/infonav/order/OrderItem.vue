@@ -19,7 +19,7 @@
 				<span>{{dateDiff}}</span>
 			</el-col>
 			<el-col :span="3" class="cell flexbox">
-				<span>{{user}}</span>
+				<span>{{$store.state.user.nickname}}</span>
 			</el-col>
 			<el-col :span="2" class="cell flexbox">
 				<span>{{price}}</span>

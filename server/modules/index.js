@@ -45,7 +45,7 @@ router.post('/search', (req, res) => {
 		},
 
 	], (err, re) => {
-		// console.log("****首页搜索结果****\n" + JSON.stringify(re));
+		console.log("****首页搜索结果****\n" + JSON.stringify(re));
 		res.json(re)
 	})
 });
@@ -153,6 +153,87 @@ router.post('/style/search', (req, res) => {
 	], (err, re) => {
 		// console.log("****条件查询结果****\n"+JSON.stringify(re));
 		res.json(re)
+	})
+
+});
+
+//houseinfo
+router.post('/house', (req, res) => {
+	let h_id = req.body.h_id;
+	let data={};
+	async.waterfall([
+		function (cb) {
+			let sql = 'SELECT * FROM house WHERE h_id = ?';
+			conn.query(sql, h_id, (err, results) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				data.house=results[0];
+				cb(null,data);
+			})
+		},
+		function (re, cb) {
+			let sql = 'SELECT * FROM user WHERE u_id = ?';
+			conn.query(sql, re.house.u_id, (err, results) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				data.user=results[0];
+				cb(null,data);
+			})
+		},
+		function (re, cb) {
+			let sql = 'SELECT * FROM comment WHERE h_id=?';
+			conn.query(sql, h_id, (err, results) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				data.comment=results||[];
+				cb(null,data);
+			})
+		},
+
+	], (err, re) => {
+		// console.log("****houseinfo结果****\n"+JSON.stringify(re));
+		res.json(re)
+	})
+
+});
+
+//下订单
+router.post('/order', (req, res) => {
+	let data = req.body;
+	let start=new Date( JSON.parse(data.period)[0]);
+	let end=new Date( JSON.parse(data.period)[1]);
+	data.time=new Date();
+	async.waterfall([
+		function (cb) {
+			let sql = 'SELECT u_id FROM user WHERE username= ?';
+			conn.query(sql, data.username, (err, results) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				data.u_id1=results[0].u_id;
+				cb(null);
+			})
+		},
+		function (cb) {
+			let number=Date.parse(new Date());
+			let sql = 'insert into order_list (time,price,period,h_id,u_id1,number,start,end) values (?,?,?,?,?,?,?,?)';
+			conn.query(sql,[data.time,data.price,data.period,data.h_id,data.u_id1,number,start,end], (err, results) => {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				cb(null);
+			})
+		},		
+	], (err) => {
+		res.json({re:"ok"});
 	})
 
 });

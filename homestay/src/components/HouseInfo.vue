@@ -4,158 +4,271 @@
 			<router-link to="/" class="toindex">首页</router-link>
 		        <span>>{{style}}</span>
 			<span>>{{id}}</span>
-			<h1>{{styleaddress}}</h1>
-			<h6>{{address}}</h6>
-			<div class="img">
-				<img :src="img1" />
+			<h1>{{info.house.title}}</h1>
+			<h6>{{ JSON.parse(info.house.location).city}}{{ JSON.parse(info.house.location).district}}{{ JSON.parse(info.house.location).detail}}</h6>
+			<div class="block">
+				<el-carousel height="490px">
+					<el-carousel-item v-for="item in arrimg" :key="item.index">
+						<img :src="item" alt="" class="carouselimg"/>
+					</el-carousel-item>
+				</el-carousel>
 			</div>
-			<div class="scorll">
-				<li><img :src="imgsrc4"/></li>
-				<li><img :src="imgsrc1"/></li>
-				<li><img :src="imgsrc2"/></li>
-				<li><img :src="imgsrc1"/></li>
-				<li><img :src="imgsrc3"/></li>
-				<li><img :src="imgsrc4"/></li>
-			</div>
-			<div class="arcside">
-				<!--需要定位的图片-->
-				<img :src="arcside"/>
-				<img :src="map"/>
-			</div>
-			<div class="infor">
-				<li><img :src="infor"/></li>
-				<li><img :src="count"/></li>
-				<li><img :src="xy"/></li>
-			</div>
-			<div class="intor1">
-	     			<img :src="intor" />
-	     		</div>
-	     		<div class="intor">
-	     			<img :src="jiben" />
-	     		</div>
-			<div class="intor2">
-				<img :src="pei" />
-			</div>
-			<div class="intor">
-				<img :src="pinglun" />
-			</div>
+			<img :src="homeinfo" alt="" srcset="">
+			<img :src="pinlun" alt="" srcset="">
 		</div>
-		<div class="intor other">
-			<img :src="other" />
+		<div class="aside">
+			<div class="price">
+				<div class="priceN">
+					<span>￥</span>
+					{{info.house.price}}
+					<span>/晚</span>
+				</div>
+				<div class="sale">满7天9.5折，满30天9.0折</div>
+			</div>
+			<div class="time">
+				<span class="start">{{ start }}</span>
+				至
+				<span class="end">{{ end }}</span>
+			</div>
+			<div class="order" @click="orderhome">{{orderinfo}}</div>
+			<p class="infotag">房东信息</p>
+			<div class="userinfo">
+				<img :src="info.user.imgsrc" alt="">
+				<div class="info-right">
+					<p>{{info.user.nickname}}</p>
+					<img :src="connect" alt="" srcset="">
+				</div>
+			</div>
+			
 		</div>
+
+		<img :src="other" alt="">
 	</div>
 </template>
 
 <script>
-import img1 from "@/assets/houseinfo/img1.jpg";
-import imgsrc1 from "@/assets/houseinfo/1.png";
-import imgsrc2 from "@/assets/houseinfo/2.png";
-import imgsrc3 from "@/assets/houseinfo/3.png";
-import imgsrc4 from "@/assets/houseinfo/4.png";
-import arcside from "@/assets/houseinfo/arcside.png";
-import map from "@/assets/houseinfo/map.png";
-import infor from "@/assets/houseinfo/infor.png";
-import count from "@/assets/houseinfo/count.png";
-import xy from "@/assets/houseinfo/xy.png";
-import jiben from "@/assets/houseinfo/jiben.png";
-import pei from "@/assets/houseinfo/pei.png";
-import pinglun from "@/assets/houseinfo/pinglun.png";
+import imgsrc1 from "@/assets/houseinfo/1.jpg";
+import imgsrc2 from "@/assets/houseinfo/2.jpg";
+import imgsrc3 from "@/assets/houseinfo/3.jpg";
+import imgsrc4 from "@/assets/houseinfo/4.jpg";
 import other from "@/assets/houseinfo/other.png";
+import connect from "@/assets/houseinfo/connect.png";
+import homeinfo from "@/assets/houseinfo/homeinfo.png";
+import pinlun from "@/assets/houseinfo/pinlun.png";
 export default {
   name: "HouseInfo",
   data() {
     return {
       style: "",
-      id: "房间编号： ",
-      styleaddress: "日系简约风  锦里   宽窄巷子   春熙路",
-      address: "成都羊青年冠寓（天府广场店） ",
-      img1,imgsrc1,imgsrc2,imgsrc3,imgsrc4,arcside,map,infor,count,xy,jiben,pei,pinglun,other,
+      id: "房间编号： 00",
+      arrimg: [imgsrc1, imgsrc2, imgsrc3, imgsrc4],
+      other,
+      connect,
+      homeinfo,
+      pinlun,
+      info: {},
+      start: "",
+      end: "",
+			orderinfo: "立即预定",
+			flag:true,
     };
   },
   created() {
     this.style = this.$route.query.style;
     this.id += this.$route.query.h_id;
+    this.axios
+      .post(
+        "http://xiaoyu:81/index/house",
+        this.qs.stringify({ h_id: this.$route.query.h_id })
+      )
+      .then(res => {
+        console.log("====houseinfo====\n" + JSON.stringify(res.data));
+        this.info = res.data;
+        this.start = new Date(
+          JSON.parse(this.info.house.period)[0]
+        ).toLocaleDateString();
+        this.end = new Date(
+          JSON.parse(this.info.house.period)[1]
+        ).toLocaleDateString();
+      });
+  },
+  mounted() {
+    window.addEventListener("scroll", this.menu);
+  },
+  methods: {
+    menu() {
+      let scroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      if (scroll > 1100) {
+        document.querySelector(".aside").classList.add("aside-other");
+      } else if(document.querySelector(".aside-other")){
+        document.querySelector(".aside").classList.remove("aside-other");
+      }
+    },
+    orderhome() {
+      if (this.flag) {
+        if (this.$store.state.user.username) {
+					console.log(11);
+          let data = {};
+          data.price = this.info.house.price;
+          data.period = this.info.house.period;
+          data.h_id = this.$route.query.h_id;
+          data.username = this.$store.state.user.username;
+          data.u_id2 = this.info.user.u_id;
+          this.axios
+            .post("http://xiaoyu:81/index/order", this.qs.stringify(data))
+            .then(res => {
+              if (res.data.re == "ok") {
+                this.orderinfo = "预定成功";
+                document.querySelector(".order").classList.add("disabled");
+                this.flag = false;
+              }
+            });
+        } else {
+          alert("请先登录");
+        }
+      }
+    }
   }
 };
 </script>
 
 <style scoped>
-li {
-  list-style-type: none;
+[v-cloak] {
+  display: none;
+}
+
+h1 {
+  margin: 8px 0;
+  color: #313442;
+  font-weight: 500;
+}
+h6 {
+  line-height: 18px;
+  font-size: 14px;
+  color: #777776;
+  width: 695px;
+  height: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 400;
 }
 .toindex {
-	color: #333;
-	text-decoration: none;
+  color: #333;
+  text-decoration: none;
 }
 .content {
   width: 92%;
-  height: 1550px;
+  height: 1500px;
   position: relative;
   align-items: center;
   justify-content: center;
   margin-left: 4%;
 }
-.title {
-  height: 120px;
-  width: 100%;
-  margin-top: 0%;
-}
-.img {
-  height: 480px;
-  width: 770px;
 
-  float: left;
+.block {
+  width: 800px;
 }
-.img img {
-  height: 480px;
-  width: 786px;
+.carouselimg {
+  height: 490px;
+  width: 800px;
 }
-.scorll {
-  height: 480px;
-  width: 100px;
-  position: relative;
-  margin-left: 15px;
-  float: left;
+.aside {
+  width: 400px;
+  height: 400px;
+  border: 1px solid #ccc;
+  position: fixed;
+  right: 20px;
+  top: 172px;
 }
-.arcside {
-  float: right;
-  width: 310px;
-  height: 554px;
+.aside-other {
+  position: absolute !important;
+  right: 20px;
+  top: 172px;
 }
-.infor {
+.order {
+  width: 100%;
+  font-size: 20px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
+  background: #ffa800;
+  cursor: pointer;
+}
+.priceN {
+  line-height: 50px;
+}
+.price {
+  width: 100%;
   height: 90px;
-  width: 770px;
-  border-bottom: 1px solid darkgrey;
-  position: relative;
-  margin-top: 497px;
+  background: #eee;
+  color: #ff5d51;
+  font-size: 22px;
+  border-bottom: 1px solid #ccc;
 }
-.infor li {
-  float: left;
-  width: 33%;
-  height: 90px;
+.price span {
+  font-size: 16px;
 }
-.scorll li {
-  height: 68px;
-  width: 80px;
+.sale {
+  font-size: 14px;
+  color: black;
+  position: absolute;
+  top: 50px;
+  text-indent: 4px;
+}
+.time {
+  width: 90%;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #ccc;
+  margin: 16px auto;
+  text-align: center;
+}
+.infotag {
   position: relative;
-  margin-left: 10px;
+  left: 160px;
+  margin: 10px;
+  color: #2ebe6a;
+}
+.userinfo {
+  width: 100%;
+  height: 200px;
+  border-top: 1px solid #ccc;
   margin-top: 10px;
+  position: relative;
 }
-.scorll li img {
-  height: 68px;
-  width: 80px;
+.userinfo > img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
-.intor {
-  height: 120px;
-  width: 800px;
-  border-bottom: 1px solid darkgrey;
+.info-right {
+  width: 250px;
+  height: 100px;
+  position: absolute;
+  top: 20px;
+  right: 40px;
 }
-.intor2 {
-  height: 180px;
-  width: 800px;
-  border-bottom: 1px solid darkgrey;
-}	     	
-.other {
-	height: 300px;
+.info-right p {
+  font-size: 20px;
+  line-height: 32px;
+  color: #4d4844;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.info-right img {
+  margin-left: 30px;
+}
+.disabled {
+    /* pointer-events: none; */
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 </style>

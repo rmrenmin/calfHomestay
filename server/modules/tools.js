@@ -39,7 +39,7 @@ module.exports.uploadimg = (req, res) => {
 }
 //随机字符串
 module.exports.randomString = len => {　　
-	len = len || 10;　　
+	len = len || 4;　　
 	var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';　
 	var maxPos = $chars.length;　　
 	var pwd = 'xn';　　

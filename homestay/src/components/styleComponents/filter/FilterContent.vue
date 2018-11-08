@@ -61,7 +61,7 @@ export default {
         console.dir(val);
         this.axios.post("http://xiaoyu:81/index/style/search",
           this.qs.stringify({
-            style: this.$route.query.style,
+            style: this.$route.query.style||"",
             data:val
           })
         ).then(re => {
